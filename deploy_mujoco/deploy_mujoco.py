@@ -10,16 +10,30 @@ import mujoco
 import numpy as np
 import yaml
 import os
+import select
 from common.ctrlcomp import *
 from FSM.FSM import *
 from common.utils import get_gravity_orientation
-from common.joystick import JoyStick, JoystickButton
 
-
+# Import msvcrt for Windows if available
+try:
+    import msvcrt
+except ImportError:
+    msvcrt = None
 
 def pd_control(target_q, q, kp, target_dq, dq, kd):
     """Calculates torques from position commands"""
     return (target_q - q) * kp + (target_dq - dq) * kd
+
+def get_input_non_blocking():
+    """Get input without blocking the main loop"""
+    if os.name == 'nt':  # Windows
+        if msvcrt.kbhit():
+            return msvcrt.getch().decode('utf-8').lower()
+    else:  # Unix/Linux/MacOS
+        if select.select([sys.stdin], [], [], 0)[0]:
+            return sys.stdin.readline().strip().lower()
+    return None
 
 if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -44,38 +58,80 @@ if __name__ == "__main__":
     policy_output = PolicyOutput(num_joints)
     FSM_controller = FSM(state_cmd, policy_output)
     
-    joystick = JoyStick()
+    print("=== Terminal Commands ===")
+    print("q: Quit simulation")
+    print("p: PASSIVE mode")
+    print("r: POS_RESET")
+    print("l: LOCO mode")
+    print("1: SKILL_1")
+    print("2: SKILL_2")
+    print("3: SKILL_3")
+    print("4: SKILL_4")
+    print("5: SKILL_Horse_Stance")
+    print("w: Forward movement")
+    print("s: Backward movement")
+    print("a: Left movement")
+    print("d: Right movement")
+    print("up: Up movement")
+    print("down: Down movement")
+    print("========================")
+    
     Running = True
     with mujoco.viewer.launch_passive(m, d) as viewer:
         sim_start_time = time.time()
         while viewer.is_running() and Running:
             try:
-                if(joystick.is_button_pressed(JoystickButton.SELECT)):
-                    Running = False
-
-                joystick.update()
-                if joystick.is_button_released(JoystickButton.L3):
-                    state_cmd.skill_cmd = FSMCommand.PASSIVE
-                if joystick.is_button_released(JoystickButton.START):
-                    state_cmd.skill_cmd = FSMCommand.POS_RESET
-                if joystick.is_button_released(JoystickButton.A) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.LOCO
-                if joystick.is_button_released(JoystickButton.X) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_1
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_2
-                if joystick.is_button_released(JoystickButton.B) and joystick.is_button_pressed(JoystickButton.R1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_3
-                if joystick.is_button_released(JoystickButton.Y) and joystick.is_button_pressed(JoystickButton.L1):
-                    state_cmd.skill_cmd = FSMCommand.SKILL_4
-                
-                state_cmd.vel_cmd[0] = -joystick.get_axis_value(1)
-                state_cmd.vel_cmd[1] = -joystick.get_axis_value(0)
-                state_cmd.vel_cmd[2] = -joystick.get_axis_value(3)
+                # Check for terminal commands
+                cmd = get_input_non_blocking()
+                if cmd:
+                    if cmd == 'q':
+                        Running = False
+                    elif cmd == 'p':
+                        state_cmd.skill_cmd = FSMCommand.PASSIVE
+                    elif cmd == 'r':
+                        state_cmd.skill_cmd = FSMCommand.POS_RESET
+                    elif cmd == 'l':
+                        state_cmd.skill_cmd = FSMCommand.LOCO
+                    elif cmd == '1':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_1
+                    elif cmd == '2':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_2
+                    elif cmd == '3':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_3
+                    elif cmd == '4':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_4
+                    elif cmd == '5':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_Horse_Stance
+                    elif cmd == 'w':
+                        state_cmd.vel_cmd[0] = 1.0  # Forward
+                    elif cmd == 's':
+                        state_cmd.vel_cmd[0] = -1.0  # Backward
+                    elif cmd == 'a':
+                        state_cmd.vel_cmd[1] = 1.0  # Left
+                    elif cmd == 'd':
+                        state_cmd.vel_cmd[1] = -1.0  # Right
+                    elif cmd == 'up':
+                        state_cmd.vel_cmd[2] = 1.0  # Up
+                    elif cmd == 'down':
+                        state_cmd.vel_cmd[2] = -1.0  # Down
+                    elif cmd == 'stop':
+                        # Stop all movement
+                        state_cmd.vel_cmd = np.zeros(3)
                 
                 step_start = time.time()
                 
+                tau_limit = np.array([88, 139, 88, 139, 50, 50,
+                    88, 139, 88, 139, 50, 50,
+                    88, 50, 50,
+                    25, 25, 25, 25, 
+                    5, 5, 5,  # not using
+                    25, 25, 25, 25,
+                    5, 5, 5   # not using
+                ], dtype=np.float32)
                 tau = pd_control(policy_output_action, d.qpos[7:], kps, np.zeros_like(kps), d.qvel[6:], kds)
+                tau = np.clip(tau, -tau_limit, tau_limit)
+                # tau[19:22]=0.0
+                # tau[26:29]=0.0
                 d.ctrl[:] = tau
                 mujoco.mj_step(m, d)
                 sim_counter += 1

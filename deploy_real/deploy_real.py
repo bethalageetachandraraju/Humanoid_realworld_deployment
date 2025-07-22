@@ -26,6 +26,7 @@ from common.rotation_helper import get_gravity_orientation_real, transform_imu_d
 from common.remote_controller import RemoteController, KeyMap
 from config import Config
 
+print("Hello World")
 
 class Controller:
     def __init__(self, config: Config):
@@ -110,6 +111,8 @@ class Controller:
                 self.state_cmd.skill_cmd = FSMCommand.SKILL_1
             if self.remote_controller.is_button_pressed(KeyMap.Y) and self.remote_controller.is_button_pressed(KeyMap.R1):
                 self.state_cmd.skill_cmd = FSMCommand.SKILL_2
+            if self.remote_controller.is_button_pressed(KeyMap.B) and self.remote_controller.is_button_pressed(KeyMap.R1):
+                self.state_cmd.skill_cmd = FSMCommand.SKILL_Horse_Stance
             # if self.remote_controller.is_button_pressed(KeyMap.B) and self.remote_controller.is_button_pressed(KeyMap.R1):
             #     self.state_cmd.skill_cmd = FSMCommand.SKILL_3
             # if self.remote_controller.is_button_pressed(KeyMap.Y) and self.remote_controller.is_button_pressed(KeyMap.L1):

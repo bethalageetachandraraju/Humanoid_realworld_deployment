@@ -1,0 +1,78 @@
+onnx_path: "model_horse_stance.onnx"
+
+motion_length: 10.0
+
+# robot.control.stiffness
+kps: [
+      100, 100, 100, # left hip p/r/y
+      150,           # left knee
+      40, 40,        # left ankle p/r
+      100, 100, 100, # right hip p/r/y
+      150,           # right knee
+      40, 40,        # right ankle p/r
+      400, 400, 400, # waist y/r/p
+      100, 100, 50,  # left shoulder p/r/y
+      50,            # left elbow  
+      20, 20, 20,    # not using
+      100, 100, 50,  # right shoulder p/r/y
+      50,            # right elbow
+      20, 20, 20     # not using
+]
+
+# robot.control.damping
+kds: [
+      2.0, 2.0, 2.0, # left hip p/r/y
+      4.0,           # left knee
+      2.0, 2.0,      # left ankle p/r
+      2.0, 2.0, 2.0, # right hip p/r/y
+      4.0,           # right knee
+      2.0, 2.0,      # right ankle p/r
+      5.0, 5.0, 5.0, # waist y/r/p
+      2.0, 2.0, 2.0, # left shoulder p/r/y
+      2.0,           # left elbow  
+      0.4, 0.4, 0.4, # not using
+      2.0, 2.0, 2.0, # right shoulder p/r/y
+      2.0,           # right elbow
+      0.4, 0.4, 0.4  # not using
+]
+
+# robot.dof_effort_limit_list
+tau_limit: [88, 139, 88, 139, 50, 50,
+            88, 139, 88, 139, 50, 50,
+            88, 50, 50,
+            25, 25, 25, 25, 
+            5, 5, 5,  # not using
+            25, 25, 25, 25,
+            5, 5, 5   # not using
+           ]
+
+# robot.init_state.default_joint_angles
+default_angles: [-0.1,  0.0,  0.0,  0.3, -0.2, 0.0, 
+                 -0.1,  0.0,  0.0,  0.3, -0.2, 0.0,
+                  0.0, 0.0, 0.0,
+                  0.2, 0.2, 0.0, 0.9,
+                  0.0, 0.0, 0.0, 
+                  0.2, -0.2, 0.0, 0.9,
+                  0.0, 0.0, 0.0
+                ]
+
+dof23_index: [ 0, 1, 2, 3, 4, 5,
+               6, 7, 8 ,9 ,10, 11,
+               12, 13, 14,
+               15, 16, 17, 18,
+               22, 23, 24, 25
+             ]
+
+# obs.obs_scales.base_ang_vel
+ang_vel_scale: 0.25
+# obs.obs_scales.pos
+dof_pos_scale: 1.0
+# obs.obs_scales.dof_vel
+dof_vel_scale: 0.05
+# robot.control.action_scale
+action_scale: 0.25
+# obs.obs_auxiliary.history_actor / history_critic
+history_length: 4
+# robot.actions_dim
+num_actions: 23
+num_obs: 380

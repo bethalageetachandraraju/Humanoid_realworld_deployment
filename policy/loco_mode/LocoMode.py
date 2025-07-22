@@ -118,6 +118,8 @@ class LocoMode(FSMState):
             return FSMStateName.SKILL_KICK
         elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_4):
             return FSMStateName.SKILL_KungFu2
+        elif(self.state_cmd.skill_cmd == FSMCommand.SKILL_Horse_Stance):
+            return FSMStateName.SKILL_Horse_Stance
         elif(self.state_cmd.skill_cmd == FSMCommand.PASSIVE):
             return FSMStateName.PASSIVE
         else:
