@@ -159,6 +159,7 @@ python deploy_mujoco/deploy_mujoco.py
 
 - Type the corresponding key/command in the terminal and press Enter to activate the function.
 - The simulation will respond to your input in real time.
+- Guide: First press "r" then "l" and reset in mujuco, now you can see robot stable standing/walking in sim, then press the desiered key for activaation.
 
 ---
 ## 4. Real Robot Operation Instructions
@@ -173,7 +174,7 @@ python deploy_real/deploy_real.py
 4. Subsequent operations are the same as in simulation.
 
 ### **Horse Stance (NEW)**
-- To activate the Horse Stance policy on the real robot, hold **B + R1** on the remote controller.
+- To activate the Horse Stance policy on the real robot, hold **R1 + B** on the remote controller.
 - The robot will switch to the Horse Stance policy.
 
 ### **Adding/Running Future New Policies**
@@ -199,7 +200,7 @@ The Mimic policy does not guarantee 100% success rate, particularly on slippery/
 - Press `F1` to activate **PassiveMode** (damping protection)
 - Press `Select` to immediately terminate the control program
 
-### 3. Charleston Dance (R1+X) - Stable Policy Notes
+### 3. Charleston Dance (R1+X) and Horse stance (R1+B) - Stable Policy Notes
 Currently the only verified stable policy on physical robots:
 
 ⚠️ **Important Precautions**:
@@ -209,8 +210,5 @@ Currently the only verified stable policy on physical robots:
   - First transition to **PositionControl** or **PassiveMode**
   - Provide manual stabilization during transition
 
-### 4. Other Movement Advisories
-All other movements are currently **not recommended** for physical robot deployment.
-
-### 5. Strong Recommendation
+### 4. Strong Recommendation
 **Always** master operations in simulation before attempting physical robot deployment.
