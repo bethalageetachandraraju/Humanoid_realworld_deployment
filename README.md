@@ -1,19 +1,29 @@
 <div align="center">
-  <h1 align="center">RoboMimic Deploy</h1>
+  <h1 align="center">humanoid_deploy</h1>
   <p align="center">
-    <span> 🌎English </span> | <a href="README_zh.md"> 🇨🇳中文 </a>
+    <span>🌎English</span> | <a href="README_zh.md">🇨🇳中文</a>
   </p>
 </div>
 
 <p align="center">
-  <strong>​RoboMimic Deploy​​ is a multi-policy robot deployment framework based on a state-switching mechanism. Currently, the included policies are designed for the ​​Unitree G1 robot (29-DoF)​​.</strong> 
+  <strong>​humanoid_deploy​​ is a multi-policy robot deployment framework based on a state-switching mechanism. Currently, the included policies are designed for the ​​Unitree G1 robot (29-DoF)​​.</strong> 
 </p>
+
+---
+
+## Repository
+
+This is the official repository: [https://github.com/bethalageetachandraraju/Humanoid_realworld_deployment.git](https://github.com/bethalageetachandraraju/Humanoid_realworld_deployment.git)
+
+---
 
 ## Preface
 
 - **​This deployment framework is only applicable to G1 robots with a 3-DOF waist. If a waist fixing bracket is installed, it must be unlocked according to the official tutorial before this framework can be used normally.​​**
 
 - **It is recommended to remove the hands, as dance movements may cause interference.​**
+
+---
 
 ## Installation and Configuration
 
@@ -72,12 +82,40 @@ pip install -e .
 ---
 ## Running the Code
 
-## 1. Run Mujoco Simulation
+### 1. Run Mujoco Simulation (Keyboard Control)
+
+You can run the Mujoco simulation and activate different robot skills using the following keyboard shortcuts directly from the terminal (no joystick required):
+
 ```bash
 python deploy_mujoco/deploy_mujoco.py
 ```
 
-## 2. Policy Descriptions
+#### Keyboard Shortcuts (Current Implementation in Simulation):
+| Key/Command | Functionality           |
+|-------------|------------------------|
+| q           | Quit simulation        |
+| p           | PASSIVE mode           |
+| r           | POS_RESET              |
+| l           | LOCO mode              |
+| 1           | SKILL_1                |
+| 2           | SKILL_2                |
+| 3           | SKILL_3                |
+| 4           | SKILL_4                |
+| 5           | SKILL_Horse_Stance     |
+| w           | Forward movement       |
+| s           | Backward movement      |
+| a           | Left movement          |
+| d           | Right movement         |
+| up          | Up movement            |
+| down        | Down movement          |
+| stop        | Stop all movement      |
+
+- Type the corresponding key/command in the terminal and press Enter to activate the function.
+- The simulation will respond to your input in real time.
+
+---
+
+### 2. Policy Descriptions
 | Mode Name        | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
 | **PassiveMode**  | Damping protection mode                                                     |
@@ -85,30 +123,43 @@ python deploy_mujoco/deploy_mujoco.py
 | **LocoMode**     | Stable walking control mode                                                 |
 | **Dance**        | Charleston dance routine                                                    |
 | **KungFu**       | Martial arts movement                                                       |
-| **KungFu2**      | Failed martial arts training                                     |
-| **Kick**         | Bad mimic policy                                     |
+| **KungFu2**      | Failed martial arts training                                                |
+| **Kick**         | Bad mimic policy                                                            |
 | **SkillCast**    | Lower body + waist stabilization with upper limbs positioned to specific joint angles (typically executed before Mimic strategy) |
 | **SkillCooldown**| Lower body + waist continuous balancing with upper limbs reset to default angles (typically executed after Mimic strategy) |
-
+| **HorseStance**  | Horse stance pose (NEW, R1+B on remote or '5' in simulation)                |
 
 ---
 ## 3. Operation Instructions in Simulation
-1. Connect an Xbox controller.
-2. Run the simulation program:
+
+To control the robot in simulation, use the following keyboard shortcuts directly in the terminal after starting the simulation:
+
 ```bash
 python deploy_mujoco/deploy_mujoco.py
 ```
-3. Press the ​​Start​​ button to enter position control mode.
-4. Hold ​​R1 + A​​ to enter ​​LocoMode​​, then press BACKSPACE in the simulation to make the robot stand. Afterward, use the joystick to control walking.
-5. Hold ​​R1 + X​​ to enter ​​Dance​​ mode—the robot will perform the Charleston. In this mode:
-    - Press ​​Select​​ at any time to switch to damping protection mode.
-    - Hold ​​R1 + A​​ to return to walking mode (not recommended).
-    - Press ​​Start​​ to return to position control mode.
 
-6. The terminal will display a progress bar for the dance. After completion, press ​​R1 + A​​ to return to normal walking mode.
-7. In ​​LocoMode​​, pressing ​​R1 + Y​​ triggers a Martial arts movement —​ ​use only in simulation​​.
-8. In ​​LocoMode​​, pressing ​​L1 + Y​​ triggers a Martial arts movement(Failed) —​ ​use only in simulation​​.
-9. In ​​LocoMode​​, pressing ​​R1 + B​ triggers a Kick movement(Failed) —​ ​use only in simulation​​.
+| Key/Command | Functionality           |
+|-------------|------------------------|
+| q           | Quit simulation        |
+| p           | PASSIVE mode           |
+| r           | POS_RESET              |
+| l           | LOCO mode              |
+| 1           | SKILL_1                |
+| 2           | SKILL_2                |
+| 3           | SKILL_3                |
+| 4           | SKILL_4                |
+| 5           | SKILL_Horse_Stance     |
+| w           | Forward movement       |
+| s           | Backward movement      |
+| a           | Left movement          |
+| d           | Right movement         |
+| up          | Up movement            |
+| down        | Down movement          |
+| stop        | Stop all movement      |
+
+- Type the corresponding key/command in the terminal and press Enter to activate the function.
+- The simulation will respond to your input in real time.
+
 ---
 ## 4. Real Robot Operation Instructions
 
@@ -120,6 +171,18 @@ python deploy_real/deploy_real.py
 ```
 3. Press the ​​Start​​ button to enter position control mode.
 4. Subsequent operations are the same as in simulation.
+
+### **Horse Stance (NEW)**
+- To activate the Horse Stance policy on the real robot, hold **B + R1** on the remote controller.
+- The robot will switch to the Horse Stance policy.
+
+### **Adding/Running Future New Policies**
+- To add a new policy:
+    1. Implement your policy in a new folder under `policy/` (see `policy/horse_stance/` as an example).
+    2. Register your policy in `FSM/FSM.py` by adding it to the FSM class and `get_next_policy`.
+    3. Add a new command mapping in `deploy_real/deploy_real.py` (see the Horse Stance example: `KeyMap.B` + `KeyMap.R1`).
+    4. Add your policy's configuration and ONNX model as needed.
+- To run your new policy, use the corresponding button combination you defined in `deploy_real/deploy_real.py`.
 
 ---
 ## Important Notes
