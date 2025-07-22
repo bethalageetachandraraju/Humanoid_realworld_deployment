@@ -1,20 +1,11 @@
 <div align="center">
   <h1 align="center">humanoid_deploy</h1>
-  <p align="center">
-    <span>🌎English</span> | <a href="README_zh.md">🇨🇳中文</a>
-  </p>
 </div>
 
 <p align="center">
   <strong>​humanoid_deploy​​ is a multi-policy robot deployment framework based on a state-switching mechanism. Currently, the included policies are designed for the ​​Unitree G1 robot (29-DoF)​​.</strong> 
 </p>
-
 ---
-
-## Repository
-
-This is the official repository: [https://github.com/bethalageetachandraraju/Humanoid_realworld_deployment.git](https://github.com/bethalageetachandraraju/Humanoid_realworld_deployment.git)
-
 ---
 
 ## Preface
