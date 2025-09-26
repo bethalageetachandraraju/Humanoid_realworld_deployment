@@ -16,6 +16,8 @@ class FSMStateName(Enum):
     SKILL_KICK = 8
     SKILL_KungFu2 = 9
     SKILL_Horse_Stance = 10
+    SKILL_Geeta_37000 = 11
+    SKILL_Model_Horse_Stance = 12
    
 
 @unique
@@ -29,6 +31,8 @@ class FSMCommand(Enum):
     SKILL_3 = 7
     SKILL_4 = 8
     SKILL_Horse_Stance = 10
+    SKILL_Geeta_37000 = 11
+    SKILL_Model_Horse_Stance = 12
     
     
     

@@ -1,6 +1,4 @@
-# onnx_path: "geeta_37000.onnx"
-# onnx_path: "model_horse_stance.onnx"
-onnx_path: "model_punch.onnx"
+onnx_path: "geeta_37000.onnx"
 
 motion_length: 10.0
 

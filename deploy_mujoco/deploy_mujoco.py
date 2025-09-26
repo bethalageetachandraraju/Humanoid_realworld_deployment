@@ -68,6 +68,8 @@ if __name__ == "__main__":
     print("3: SKILL_3")
     print("4: SKILL_4")
     print("5: SKILL_Horse_Stance")
+    print("6: SKILL_Geeta_37000")
+    print("7: SKILL_Model_Horse_Stance")
     print("w: Forward movement")
     print("s: Backward movement")
     print("a: Left movement")
@@ -102,6 +104,10 @@ if __name__ == "__main__":
                         state_cmd.skill_cmd = FSMCommand.SKILL_4
                     elif cmd == '5':
                         state_cmd.skill_cmd = FSMCommand.SKILL_Horse_Stance
+                    elif cmd == '6':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_Geeta_37000
+                    elif cmd == '7':
+                        state_cmd.skill_cmd = FSMCommand.SKILL_Model_Horse_Stance
                     elif cmd == 'w':
                         state_cmd.vel_cmd[0] = 1.0  # Forward
                     elif cmd == 's':

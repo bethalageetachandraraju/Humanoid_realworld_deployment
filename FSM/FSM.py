@@ -10,6 +10,8 @@ from policy.skill_cast.SkillCast import SkillCast
 from policy.kick.Kick import Kick
 from policy.kungfu2.KungFu2 import KungFu2
 from policy.horse_stance.HorseStance import HorseStance
+from policy.geeta_37000.Geeta37000 import Geeta37000
+from policy.model_horse_stance.ModelHorseStance import ModelHorseStance
 from FSM.FSMState import *
 import time
 from common.ctrlcomp import *
@@ -39,6 +41,8 @@ class FSM:
         self.kick_policy = Kick(state_cmd, policy_output)
         self.kungfu2_policy = KungFu2(state_cmd, policy_output)
         self.horse_stance_policy = HorseStance(state_cmd, policy_output)
+        self.geeta_37000_policy = Geeta37000(state_cmd, policy_output)
+        self.model_horse_stance_policy = ModelHorseStance(state_cmd, policy_output)
         
         print("initalized all policies!!!")
         
@@ -99,6 +103,10 @@ class FSM:
             self.cur_policy = self.kungfu2_policy
         elif((policy_name == FSMStateName.SKILL_Horse_Stance)):
             self.cur_policy = self.horse_stance_policy
+        elif((policy_name == FSMStateName.SKILL_Geeta_37000)):
+            self.cur_policy = self.geeta_37000_policy
+        elif((policy_name == FSMStateName.SKILL_Model_Horse_Stance)):
+            self.cur_policy = self.model_horse_stance_policy
         else:
             pass
             
